@@ -27,6 +27,31 @@ function $TimeoutProvider() {
       *
       * If you only want a promise that will be resolved after some specified delay
       * then you can call `$timeout` without the `fn` function.
+      * 
+      * Here an example with TypeScript:
+      * ```
+      * var aPromise = $timeout( aFunctionToBeCalled, 3000 ); // 3 Seconds
+      * 
+      * // if you want to cancel the timer, you can now use the returned promise:
+      * $timeout.cancel( aPromise );
+      * ```
+      * If the function (aFunctionToBeCalled) is called with no delay, you maybe used brackets
+      * after the function name.
+      * ```
+      * var aPromise = $timeout( aFunctionToBeCalled(), 3000 ); // WRONG, no brackets!
+      * ```
+      * 
+      * If you write a class and want to call a method of the running instance, the following 
+      * example WON'T work:
+      * ```
+      * var aPromise = $timeout( this.aMethodToBeCalled, 3000 ); // WRONG!
+      * ```
+      * The aMethodToBeCalled-method will be called but with the wrong instance in 'this'. Instead of the class
+      * instance, you will get a windows object, which does not help in class context. To solve that issue, you can
+      * go this way:
+      * ```
+      * var aPromise = $timeout( function(){ this.aMethodToBeCalled() ), 3000 ); // OK, and with brackets
+      * ```
       *
       * @param {function()=} fn A function, whose execution should be delayed.
       * @param {number=} [delay=0] Delay in milliseconds.
